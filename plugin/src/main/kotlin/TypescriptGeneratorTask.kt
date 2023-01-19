@@ -107,8 +107,7 @@ abstract class TypescriptGeneratorTask : DefaultTask() {
                 exportedDefinitions
             else
                 imports.get().joinToString("\n") +
-                    "\n\n" +
-                        exportedDefinitions
+                    "\n\n" + exportedDefinitions
 
         outputPath.get().toFile().writeText(result)
         logger.lifecycle(outputPath.get().toString())

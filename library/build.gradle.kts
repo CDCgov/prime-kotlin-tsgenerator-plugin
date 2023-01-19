@@ -18,9 +18,7 @@ ktlint {
 }
 
 kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
-    }
+    jvmToolchain(11)
 }
 
 group = "gov.cdc.prime"

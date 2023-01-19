@@ -23,7 +23,7 @@ dependencies {
     implementation("io.github.classgraph:classgraph:4.8.153")
     testImplementation("com.fasterxml.jackson.core:jackson-databind:2.14.1")
     testImplementation(kotlin("test"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
     api(project(":library"))
 }
 

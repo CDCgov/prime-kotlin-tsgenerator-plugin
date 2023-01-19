@@ -50,7 +50,7 @@ tasks.withType<KotlinCompile> {
 
 kotlin {
     jvmToolchain {
-        this.languageVersion.set(JavaLanguageVersion.of(11))
+        languageVersion.set(JavaLanguageVersion.of(11))
     }
 }
 

@@ -1,4 +1,4 @@
-package gov.cdc.prime.tsGenerator.library
+package gov.cdc.prime.tsGenerator
 
 import java.io.Serializable
 

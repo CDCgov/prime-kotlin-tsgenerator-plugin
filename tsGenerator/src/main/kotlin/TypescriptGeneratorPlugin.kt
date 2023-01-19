@@ -1,4 +1,4 @@
-package gov.cdc.prime.tsGenerator.plugin
+package gov.cdc.prime.tsGenerator
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project

@@ -1,6 +1,5 @@
-package gov.cdc.prime.tsGenerator.plugin
+package gov.cdc.prime.tsGenerator
 
-import gov.cdc.prime.tsGenerator.library.TsExportAnnotationConfig
 import io.github.classgraph.ClassGraph
 import me.ntrrgc.tsGenerator.TypeScriptGenerator
 import me.ntrrgc.tsGenerator.VoidType

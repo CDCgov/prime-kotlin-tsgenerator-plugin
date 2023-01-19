@@ -1,6 +1,6 @@
 plugins {
     `java-gradle-plugin`
-    kotlin("jvm") version "1.7.21"
+    kotlin("jvm") version "1.7.22"
     id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
     id("maven-publish")
 }
@@ -22,7 +22,7 @@ dependencies {
     testImplementation("com.fasterxml.jackson.core:jackson-databind:2.14.1")
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
-    api(project(":library"))
+    api(project(":tsGenerator-annotation"))
 }
 
 tasks.test {
@@ -48,9 +48,9 @@ kotlin {
 
 gradlePlugin {
     plugins {
-        create("tsGeneratorPlugin") {
-            id = "gov.cdc.prime.tsGenerator.plugin"
-            implementationClass = "gov.cdc.prime.tsGenerator.plugin.TypescriptGeneratorPlugin"
+        create("tsGenerator") {
+            id = "gov.cdc.prime.tsGenerator"
+            implementationClass = "gov.cdc.prime.tsGenerator.TypescriptGeneratorPlugin"
         }
     }
 }
@@ -63,6 +63,17 @@ publishing {
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    // afterEvaluate is necessary because java-gradle-plugin
+    // creates its publications in an afterEvaluate callback
+    afterEvaluate {
+        publications {
+            withType<MavenPublication> {
+                pom {
+                    groupId = "gov.cdc.prime"
+                }
             }
         }
     }

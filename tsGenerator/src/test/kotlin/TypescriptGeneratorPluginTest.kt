@@ -1,6 +1,5 @@
-package gov.cdc.prime.tsGenerator.plugin
+package gov.cdc.prime.tsGenerator
 
-import gov.cdc.prime.tsGenerator.library.TsExportAnnotationConfig
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.io.TempDir
@@ -18,7 +17,7 @@ class TypescriptGeneratorPluginTest {
     private val pluginExt: TypescriptGeneratorExtension
 
     init {
-        project.pluginManager.apply("gov.cdc.prime.tsGenerator.plugin")
+        project.pluginManager.apply("gov.cdc.prime.tsGenerator")
         generateTask = project.tasks.withType(TypescriptGeneratorTask::class.java).first()
         pluginExt = project.extensions.getByType(TypescriptGeneratorExtension::class.java)
     }
@@ -39,10 +38,10 @@ class TypescriptGeneratorPluginTest {
         pluginExt.apply {
             outputPath.set(tmpExportFile.toPath())
             classPath.set(project.layout.projectDirectory.files("test/kotlin/TsExportTest.kt"))
-            annotation.set(TsExportAnnotationConfig("gov.cdc.prime.tsGenerator.plugin"))
+            annotation.set(TsExportAnnotationConfig("gov.cdc.prime.tsGenerator"))
             manualClasses.set(
                 listOf(
-                    "gov.cdc.prime.tsGenerator.plugin.TsExportManualTest"
+                    "gov.cdc.prime.tsGenerator.TsExportManualTest"
                 )
             )
         }

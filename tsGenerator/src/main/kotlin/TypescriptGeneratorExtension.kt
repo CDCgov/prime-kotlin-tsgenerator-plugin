@@ -1,6 +1,5 @@
-package gov.cdc.prime.tsGenerator.plugin
+package gov.cdc.prime.tsGenerator
 
-import gov.cdc.prime.tsGenerator.library.TsExportAnnotationConfig
 import me.ntrrgc.tsGenerator.VoidType
 import org.gradle.api.Project
 import org.gradle.api.file.FileCollection

@@ -1,4 +1,4 @@
-package gov.cdc.prime.tsGenerator.plugin
+package gov.cdc.prime.tsGenerator
 
 import me.ntrrgc.tsGenerator.ClassTransformer
 import kotlin.reflect.KClass

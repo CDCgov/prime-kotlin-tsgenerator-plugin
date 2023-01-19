@@ -1,8 +1,7 @@
-package gov.cdc.prime.tsGenerator.plugin
+package gov.cdc.prime.tsGenerator
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreType
-import gov.cdc.prime.tsGenerator.library.TsExport
 
 /**
  * Typescript export will not include properties with this type

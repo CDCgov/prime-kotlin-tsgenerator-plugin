@@ -1,3 +1,3 @@
 
-rootProject.name = "prime-kotlin-tsgenerator-plugin"
-include("plugin", "library")
+rootProject.name = "prime-kotlin-tsGenerator-plugin"
+include("tsGenerator", "tsGenerator-annotation")

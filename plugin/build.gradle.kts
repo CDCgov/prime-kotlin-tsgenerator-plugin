@@ -4,6 +4,7 @@ plugins {
     `java-gradle-plugin`
     kotlin("jvm") version "1.7.21"
     id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
+    id("maven-publish")
 }
 
 repositories {
@@ -57,6 +58,19 @@ gradlePlugin {
         create("tsGeneratorPlugin") {
             id = "gov.cdc.prime.tsGenerator.plugin"
             implementationClass = "gov.cdc.prime.tsGenerator.plugin.TypescriptGeneratorPlugin"
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/CDCgov/prime-kotlin-tsgenerator-plugin")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
         }
     }
 }

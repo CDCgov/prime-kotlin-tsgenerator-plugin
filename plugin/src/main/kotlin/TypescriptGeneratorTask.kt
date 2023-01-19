@@ -100,13 +100,15 @@ abstract class TypescriptGeneratorTask : DefaultTask() {
             classTransformers = listOf(TypescriptClassTransformer())
         )
 
+        val exportedDefinitions = generator.individualDefinitions.joinToString("\n\n") { "export $it" }
+
         val result =
             if (imports.get().isEmpty())
-                generator.definitionsText
+                exportedDefinitions
             else
                 imports.get().joinToString("\n") +
                     "\n\n" +
-                    generator.definitionsText
+                        exportedDefinitions
 
         outputPath.get().toFile().writeText(result)
         logger.lifecycle(outputPath.get().toString())

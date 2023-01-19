@@ -1,12 +1,12 @@
-interface TsExportAnnotationTest {
+export interface TsExportAnnotationTest {
     foo: string;
 }
 
-interface TsExportInterface {
+export interface TsExportInterface {
     foo: string | undefined;
 }
 
-interface TsExportManualTest extends TsExportInterface {
+export interface TsExportManualTest extends TsExportInterface {
     bar: string;
     foo: undefined;
 }

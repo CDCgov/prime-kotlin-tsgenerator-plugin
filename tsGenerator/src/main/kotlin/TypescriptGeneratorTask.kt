@@ -14,12 +14,57 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import java.net.URLClassLoader
 import java.nio.file.Path
+import kotlin.reflect.KClass
+
+data class TypeScriptGeneratorParameters(
+    val rootClasses: List<KClass<out Any>>,
+    val mappings: Map<KClass<out Any>, String>,
+    val intTypeName: String,
+    val voidType: VoidType,
+    val classTransformers: List<TypescriptClassTransformer>
+)
+
+var Annotation = TsExport::class.qualifiedName!!
+
+fun createTypeScriptGeneratorParameters(
+    classPath: FileCollection,
+    manualClasses: List<String> = listOf<String>(),
+    typeMappings: Map<String, String> = mapOf("java.lang.Void" to "undefined"),
+    intTypeName: String = "number",
+    voidType: VoidType = VoidType.UNDEFINED
+): TypeScriptGeneratorParameters {
+    val urls = classPath.files.map { it.toURI().toURL() }
+    val classLoader = URLClassLoader(urls.toTypedArray())
+    val classGraph = ClassGraph().addClassLoader(classLoader).enableAllInfo().scan()
+
+    val klasses = classGraph.allClasses.filter { klass ->
+        !klass.hasAnnotation(JsonAnnotations.JSONIGNORETYPE.fullName) &&
+                klass.hasAnnotation(Annotation) ||
+                (manualClasses.any { it == klass.name })
+    }.map { it.loadClass().kotlin }
+
+    val mappings =
+        typeMappings.entries.associate { (className, typescriptName) ->
+            Class.forName(
+                className,
+                true,
+                classLoader
+            ).kotlin to typescriptName
+        }
+
+    val classTransformers = listOf(TypescriptClassTransformer())
+
+    return TypeScriptGeneratorParameters(
+        rootClasses = klasses,
+        mappings = mappings,
+        intTypeName = intTypeName,
+        voidType = voidType,
+        classTransformers = classTransformers
+    )
+}
 
 @Suppress("UnstableApiUsage")
 abstract class TypescriptGeneratorTask : DefaultTask() {
-    @get:Input
-    abstract val annotation: Property<TsExportAnnotationConfig>
-
     @get:Input
     abstract val manualClasses: ListProperty<String>
 
@@ -41,12 +86,17 @@ abstract class TypescriptGeneratorTask : DefaultTask() {
     @get:OutputFile
     abstract val outputPath: Property<Path>
 
+    @get:Input
+    abstract val typescriptImportMode: Property<TypescriptImportMode>
+
+    @get:Input
+    abstract val typescriptEnumType: Property<TypescriptEnumType>
+
     init {
         description = "Generates Typescript definitions from Kotlin classes."
     }
 
-    fun useExtension(ext: TypescriptGeneratorExtension) {
-        annotation.set(ext.annotation)
+    fun useExtension(ext: TypescriptGeneratorConfigExtension) {
         manualClasses.set(ext.manualClasses)
         outputPath.set(ext.outputPath)
         classPath.set(ext.classPath)
@@ -54,6 +104,8 @@ abstract class TypescriptGeneratorTask : DefaultTask() {
         imports.set(ext.imports)
         intTypeName.set(ext.intTypeName)
         voidType.set(ext.voidType)
+        typescriptImportMode.set(ext.typescriptImportMode)
+        typescriptEnumType.set(ext.typescriptEnumType)
     }
 
     @TaskAction
@@ -64,49 +116,26 @@ abstract class TypescriptGeneratorTask : DefaultTask() {
         if (!classPath.isPresent) {
             throw IncompletePluginConfigurationException("classPath")
         }
-        if ((!manualClasses.isPresent || manualClasses.get().isEmpty()) &&
-            !annotation.isPresent
-        ) {
-            throw IncompletePluginConfigurationException("manualClasses or tsExportAnnotation")
-        }
 
-        val urls = classPath.get().files.map { it.toURI().toURL() }
-        val classLoader = URLClassLoader(urls.toTypedArray())
-        val classGraph = ClassGraph().addClassLoader(classLoader).enableAllInfo()
-            .acceptPackages(annotation.get().packageName).scan()
-
-        val klasses = classGraph.allClasses.filter { klass ->
-            !klass.hasAnnotation(JsonAnnotations.JSONIGNORETYPE.fullName) &&
-                (annotation.isPresent && klass.hasAnnotation(annotation.get().fullyQualifiedName)) ||
-                (manualClasses.isPresent && manualClasses.get().any { it == klass.name })
-        }.map { it.loadClass().kotlin }
-        logger.lifecycle("Found ${klasses.size} exportable class(es)")
-
-        val mappings =
-            typeMappings.get().entries.associate { (className, typescriptName) ->
-                Class.forName(
-                    className,
-                    true,
-                    classLoader
-                ).kotlin to typescriptName
-            }
-
-        val generator = TypeScriptGenerator(
-            rootClasses = klasses,
-            mappings = mappings,
-            intTypeName = intTypeName.get(),
-            voidType = voidType.get(),
-            classTransformers = listOf(TypescriptClassTransformer())
+        val tsParams = createTypeScriptGeneratorParameters(
+            classPath.get(),
+            manualClasses.get(),
+            typeMappings.get(),
+            intTypeName.get(),
+            voidType.get()
         )
 
-        val exportedDefinitions = generator.individualDefinitions.joinToString("\n\n") { "export $it" }
+        logger.lifecycle("Found ${tsParams.rootClasses.size} exportable class(es)")
 
-        val result =
-            if (imports.get().isEmpty())
-                exportedDefinitions
-            else
-                imports.get().joinToString("\n") +
-                    "\n\n" + exportedDefinitions
+        val generator = TypeScriptGenerator(
+            rootClasses = tsParams.rootClasses,
+            mappings = tsParams.mappings,
+            intTypeName = tsParams.intTypeName,
+            voidType = tsParams.voidType,
+            classTransformers = tsParams.classTransformers
+        )
+
+        val result = generator.generateDefinitionsText(typescriptImportMode.get(), typescriptEnumType.get())
 
         outputPath.get().toFile().writeText(result)
         logger.lifecycle(outputPath.get().toString())

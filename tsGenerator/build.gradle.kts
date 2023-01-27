@@ -66,15 +66,4 @@ publishing {
             }
         }
     }
-    // afterEvaluate is necessary because java-gradle-plugin
-    // creates its publications in an afterEvaluate callback
-    afterEvaluate {
-        publications {
-            withType<MavenPublication> {
-                pom {
-                    groupId = "gov.cdc.prime"
-                }
-            }
-        }
-    }
 }

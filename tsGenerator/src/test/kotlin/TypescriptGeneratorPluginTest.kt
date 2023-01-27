@@ -38,7 +38,6 @@ class TypescriptGeneratorPluginTest {
         pluginExt.apply {
             outputPath.set(tmpExportFile.toPath())
             classPath.set(project.layout.projectDirectory.files("test/kotlin/TsExportTest.kt"))
-            annotation.set(TsExportAnnotationConfig("gov.cdc.prime.tsGenerator"))
             manualClasses.set(
                 listOf(
                     "gov.cdc.prime.tsGenerator.TsExportManualTest"

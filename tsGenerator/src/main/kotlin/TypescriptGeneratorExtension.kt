@@ -10,11 +10,6 @@ import java.nio.file.Path
 
 open class TypescriptGeneratorExtension(project: Project) {
     /**
-     * The annotation to look for to automatically select classes in packages
-     */
-    val annotation: Property<TsExportAnnotationConfig> = project.objects.property(TsExportAnnotationConfig::class.java)
-
-    /**
      * Manually select classes. Use their fully qualified names.
      */
     val manualClasses: ListProperty<String> = project.objects.listProperty(String::class.java)

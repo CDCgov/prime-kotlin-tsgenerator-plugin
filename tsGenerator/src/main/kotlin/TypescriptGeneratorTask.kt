@@ -17,8 +17,7 @@ import java.nio.file.Path
 
 @Suppress("UnstableApiUsage")
 abstract class TypescriptGeneratorTask : DefaultTask() {
-    @get:Input
-    abstract val annotation: Property<TsExportAnnotationConfig>
+    private val annotation = TsExport::class.qualifiedName
 
     @get:Input
     abstract val manualClasses: ListProperty<String>
@@ -46,7 +45,6 @@ abstract class TypescriptGeneratorTask : DefaultTask() {
     }
 
     fun useExtension(ext: TypescriptGeneratorExtension) {
-        annotation.set(ext.annotation)
         manualClasses.set(ext.manualClasses)
         outputPath.set(ext.outputPath)
         classPath.set(ext.classPath)
@@ -64,20 +62,14 @@ abstract class TypescriptGeneratorTask : DefaultTask() {
         if (!classPath.isPresent) {
             throw IncompletePluginConfigurationException("classPath")
         }
-        if ((!manualClasses.isPresent || manualClasses.get().isEmpty()) &&
-            !annotation.isPresent
-        ) {
-            throw IncompletePluginConfigurationException("manualClasses or tsExportAnnotation")
-        }
 
         val urls = classPath.get().files.map { it.toURI().toURL() }
         val classLoader = URLClassLoader(urls.toTypedArray())
-        val classGraph = ClassGraph().addClassLoader(classLoader).enableAllInfo()
-            .acceptPackages(annotation.get().packageName).scan()
+        val classGraph = ClassGraph().addClassLoader(classLoader).enableAllInfo().scan()
 
         val klasses = classGraph.allClasses.filter { klass ->
             !klass.hasAnnotation(JsonAnnotations.JSONIGNORETYPE.fullName) &&
-                (annotation.isPresent && klass.hasAnnotation(annotation.get().fullyQualifiedName)) ||
+                klass.hasAnnotation(annotation) ||
                 (manualClasses.isPresent && manualClasses.get().any { it == klass.name })
         }.map { it.loadClass().kotlin }
         logger.lifecycle("Found ${klasses.size} exportable class(es)")

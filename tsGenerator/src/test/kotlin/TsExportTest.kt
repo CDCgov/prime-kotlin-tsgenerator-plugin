@@ -25,6 +25,12 @@ interface TsExportInterface {
 @Suppress("unused")
 class TsExportAnnotationTest(val foo: String)
 
+@Suppress("unused")
+enum class TsExportOrdinalEnumTest {
+    FOO,
+    BAR
+}
+
 /**
  * Test class load by manual fqn.
  * Typescript export will only have "test" and "foo" properties.
@@ -35,7 +41,8 @@ class TsExportManualTest(
     @JsonIgnore val ignoreField: String,
     @get:JsonIgnore val ignoreGet: String,
     val ignoreType: TsExportJsonIgnoreTypeTest,
-    val bar: String
+    val bar: String,
+    val enumType: TsExportOrdinalEnumTest
 ) : TsExportInterface {
     @get:JsonIgnore
     override val foo: String? = null

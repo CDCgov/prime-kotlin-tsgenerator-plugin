@@ -8,7 +8,8 @@ import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import java.nio.file.Path
 
-open class TypescriptGeneratorExtension(project: Project) {
+
+open class TypescriptGeneratorConfigExtension(project: Project) {
     /**
      * Manually select classes. Use their fully qualified names.
      */
@@ -18,6 +19,18 @@ open class TypescriptGeneratorExtension(project: Project) {
      * Where to write output typescript declaration file
      */
     val outputPath: Property<Path?> = project.objects.property(Path::class.java)
+
+    /**
+     * How the types should be imported
+     */
+    val typescriptImportMode: Property<TypescriptImportMode> =
+        project.objects.property(TypescriptImportMode::class.java).convention(TypescriptImportMode.NONE)
+
+    /**
+     * How typescript enums should be handled
+     */
+    val typescriptEnumType: Property<TypescriptEnumType> =
+        project.objects.property(TypescriptEnumType::class.java).convention(TypescriptEnumType.STRING_UNION)
 
     /**
      * Usually layout.files(project.sourceSets.main.get().runtimeClasspath)

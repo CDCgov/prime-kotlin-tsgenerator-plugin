@@ -19,7 +19,7 @@ version = "0.1-SNAPSHOT"
 dependencies {
     implementation("com.github.ntrrgc:ts-generator:1.1.2")
     implementation("io.github.classgraph:classgraph:4.8.154")
-    testImplementation("com.fasterxml.jackson.core:jackson-databind:2.14.1")
+    testImplementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
     api(project(":tsGenerator-annotation"))

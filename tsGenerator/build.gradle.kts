@@ -39,7 +39,7 @@ tasks.withType<Test>().configureEach {
 
 ktlint {
     // See ktlint versions at https://github.com/pinterest/ktlint/releases
-    version.set("0.43.2")
+    version.set("0.44.0")
 }
 
 kotlin {

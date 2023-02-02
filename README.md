@@ -46,7 +46,7 @@ typescriptGenerator.apply {
     )
 }
 
-// Called during "classes" stage of gradle lifecycle
+// Called during "classes" stage of gradle lifecycle. See: https://docs.gradle.org/current/userguide/java_plugin.html#lifecycle_tasks
 tasks.classes {
     finalizedBy("generateTypescriptDefinitions")
 }

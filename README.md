@@ -11,7 +11,57 @@
 
 ## Overview
 
-A gradle plugin for [ts-generator](https://github.com/ntrrgc/ts-generator). This plugin also provides additional options, such as how you would like to import the TypeScript definitions in your project (exports or declare global) and creating an object representation of TypeScript string union types (what Kotlin enums are converted to).
+A gradle plugin for [ts-generator](https://github.com/ntrrgc/ts-generator) with additional enhancements including:
+- Support for JSON [Jackson Annotations](https://github.com/FasterXML/jackson-annotations) when converting to TypeScript
+- Configure how you would like to import the TypeScript definitions in your project (exports or declare global)
+- Option for creating an object representation of TypeScript string union types (what Kotlin enums are converted to)
+
+## How to Use
+
+The following configuration options from [ts-generator](https://github.com/ntrrgc/ts-generator) are exposed:
+- typeMappings (```Map<String, String>```)
+- imports (```List<String>```)
+- intTypeName (```String```)
+- voidType (```VoidType```)
+
+Additionally, these are exposed:
+- manualClasses (```List<string>```): Manually select classes. Use their fully qualified names.
+- outputPath (```Path```): Where to write output typescript declaration file
+- typescriptImportMode (```TypescriptImportMode```): How the types should be imported
+- typescriptEnumType (```TypescriptEnumType```): How typescript enums should be handled
+- classPath (```FileCollection```): Usually ```layout.files(project.sourceSets.main.get().runtimeClasspath)```
+
+A special export annotation (```gov.cdc.prime.tsGenerator.TsExport```) can be used to select classes that you want to be exported. In situations where your classes are generated dynamically, you can use the ```manualClasses``` configuration option to manually select them.
+
+Example configuration in build.gradle.kts:
+```kotlin
+typescriptGenerator.apply {
+    outputPath.set(project.projectDir.toPath().resolve("../frontend/src/typings/api-codegen.ts"))
+    classPath.set(layout.files(project.sourceSets.main.get().runtimeClasspath))
+    manualClasses.set(
+        listOf(
+            "foo.bar.CodeGeneratedClassA",
+            "foo.bar.CodeGeneratedClassB"
+        )
+    )
+}
+
+// Called during "classes" stage of gradle lifecycle
+tasks.classes {
+    finalizedBy("generateTypescriptDefinitions")
+}
+```
+
+Example annotation usage:
+```kotlin
+
+import gov.cdc.prime.tsGenerator.TsExport
+
+@TsExport
+class Foo {
+  bar: String
+}
+```
   
 ## Public Domain Standard Notice
 This repository constitutes a work of the United States Government and is not

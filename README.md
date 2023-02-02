@@ -13,7 +13,7 @@
 
 A gradle plugin for [ts-generator](https://github.com/ntrrgc/ts-generator) with additional enhancements including:
 - Support for JSON [Jackson Annotations](https://github.com/FasterXML/jackson-annotations) when converting to TypeScript
-- Configure how you would like to import the TypeScript definitions in your project (exports or declare global)
+- Configure how you would like to import the TypeScript definitions in your project (default, as exports or declare global)
 - Option for creating an object representation of TypeScript string union types (what Kotlin enums are converted to)
 
 ## How to Use

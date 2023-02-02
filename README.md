@@ -11,7 +11,7 @@
 
 ## Overview
 
-A gradle plugin for [ts-generator](https://github.com/ntrrgc/ts-generator). This plugin also provides additional options, such as how you would like to import the TypeScipt definitions in your project (exports or declare global) and creating an object representation of TypeScript string union types (what Kotlin enums are converted to).
+A gradle plugin for [ts-generator](https://github.com/ntrrgc/ts-generator). This plugin also provides additional options, such as how you would like to import the TypeScript definitions in your project (exports or declare global) and creating an object representation of TypeScript string union types (what Kotlin enums are converted to).
   
 ## Public Domain Standard Notice
 This repository constitutes a work of the United States Government and is not

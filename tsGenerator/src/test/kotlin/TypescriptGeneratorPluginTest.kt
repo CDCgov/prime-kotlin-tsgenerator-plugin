@@ -19,7 +19,7 @@ enum class CompareFile(val filename: String, val importMode: TypescriptImportMod
     fun getText(): String {
         var text = ""
         val file = TypescriptGeneratorPluginTest::class.java.classLoader.getResourceAsStream(this.filename)
-        if(file != null) {
+        if (file != null) {
             val compareReader = file.reader()
             text = compareReader.readText()
             compareReader.close()

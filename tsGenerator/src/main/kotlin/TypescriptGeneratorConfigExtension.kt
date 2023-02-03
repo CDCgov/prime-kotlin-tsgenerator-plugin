@@ -8,7 +8,6 @@ import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import java.nio.file.Path
 
-
 open class TypescriptGeneratorConfigExtension(project: Project) {
     /**
      * Manually select classes. Use their fully qualified names.

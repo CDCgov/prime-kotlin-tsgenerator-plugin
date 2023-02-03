@@ -42,9 +42,9 @@ fun TypeScriptGenerator.getIndividualDefinitions(
             val defName = TypeNameRegex.find(def)!!.groups[1]!!.value
             val name = if (defName.endsWith("Type", true)) defName.substring(0, -4) else "${defName}Type"
             val objectEnumDef = "const $name = {\n" +
-                    props.withIndex().joinToString(",\n") { "    ${it.value}: ${it.index}" } +
-                    "\n} as const;"
-            if(importMode != TypescriptImportMode.NONE) {
+                props.withIndex().joinToString(",\n") { "    ${it.value}: ${it.index}" } +
+                "\n} as const;"
+            if (importMode != TypescriptImportMode.NONE) {
                 objectEnums.add("export $objectEnumDef")
             } else {
                 objectEnums.add(objectEnumDef)
@@ -65,7 +65,7 @@ fun TypeScriptGenerator.generateDefinitionsText(
 
     if (importMode == TypescriptImportMode.DECLARE_GLOBAL) {
         var text = "declare global {\n$defsSection\n}\n"
-        if(objectDefsSection == ""){
+        if (objectDefsSection == "") {
             text += "\nexport {}\n"
         } else {
             text += "\n$objectDefsSection\n"
@@ -75,7 +75,7 @@ fun TypeScriptGenerator.generateDefinitionsText(
     }
 
     var text = "$defsSection\n"
-    if(objectDefsSection != ""){
+    if (objectDefsSection != "") {
         text += "\n$objectDefsSection\n"
     }
 

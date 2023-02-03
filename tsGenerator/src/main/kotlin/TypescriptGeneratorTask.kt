@@ -39,8 +39,8 @@ fun createTypeScriptGeneratorParameters(
 
     val klasses = classGraph.allClasses.filter { klass ->
         !klass.hasAnnotation(JsonAnnotations.JSONIGNORETYPE.fullName) &&
-                klass.hasAnnotation(Annotation) ||
-                (manualClasses.any { it == klass.name })
+            klass.hasAnnotation(Annotation) ||
+            (manualClasses.any { it == klass.name })
     }.map { it.loadClass().kotlin }
 
     val mappings =

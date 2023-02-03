@@ -40,7 +40,7 @@ fun TypeScriptGenerator.getIndividualDefinitions(
         if (StringUnionTypeRegex.matches(def) && enumType == TypescriptEnumType.OBJECT_AND_STRING_UNION) {
             val props = getUnionStrings(def)
             val defName = TypeNameRegex.find(def)!!.groups[1]!!.value
-            val name = if (defName.endsWith("Type", true)) defName.substring(0, -4) else "${defName}Type"
+            val name = if (defName.endsWith("Type", true)) defName.substring(0, defName.length-4) else "${defName}Type"
             val objectEnumDef = "const $name = {\n" +
                 props.withIndex().joinToString(",\n") { "    ${it.value}: ${it.index}" } +
                 "\n} as const;"

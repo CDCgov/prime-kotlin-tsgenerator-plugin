@@ -215,6 +215,7 @@ open class TypeScriptGenerator(
                 throw Exception("Unable to create unique type name for $name ($fullName)")
             }
 
+            visitedClassSimpleNames.add(fullName)
             name = fullName
         }
         val supertypes = klass.supertypes

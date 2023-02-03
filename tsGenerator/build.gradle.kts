@@ -20,6 +20,7 @@ version = "1.1.3"
 plugins {
     kotlin("jvm")
     `java-library`
+    `maven-publish`
     id("org.jmailen.kotlinter") version "3.13.0"
 }
 
@@ -53,4 +54,18 @@ java {
 
 kotlin {
     jvmToolchain(11)
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("tsGenerator") {
+            from(components["java"])
+        }
+    }
+
+    repositories {
+        maven {
+            url = uri("./build/publications/maven-repo")
+        }
+    }
 }

@@ -42,7 +42,7 @@ kotlin {
 gradlePlugin {
     plugins {
         create("ts-generatorPlugin") {
-            id = "gov.cdc.prime.tsGeneratorPlugin"
+            id = "com.github.CDCgov.prime-kotlin-tsgenerator-plugin"
             implementationClass = "gov.cdc.prime.tsGenerator.TypescriptGeneratorPlugin"
         }
     }

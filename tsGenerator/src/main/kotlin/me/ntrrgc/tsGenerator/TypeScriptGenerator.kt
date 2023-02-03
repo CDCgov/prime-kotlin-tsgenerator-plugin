@@ -207,16 +207,18 @@ open class TypeScriptGenerator(
     }
 
     private fun generateInterface(klass: KClass<*>): String {
-        var name = klass.simpleName
+        var name = klass.simpleName!!
         if (visitedClassSimpleNames.contains(name)) {
-            val fullName = klass.qualifiedName?.replace(".", "")
+            val fullName = klass.qualifiedName!!.replace(".", "")
 
-            if (fullName == null || visitedClassSimpleNames.contains(fullName)) {
+            if (visitedClassSimpleNames.contains(fullName)) {
                 throw Exception("Unable to create unique type name for $name ($fullName)")
             }
 
             visitedClassSimpleNames.add(fullName)
             name = fullName
+        } else {
+            visitedClassSimpleNames.add(name)
         }
         val supertypes = klass.supertypes
             .filterNot { it.classifier in ignoredSuperclasses }

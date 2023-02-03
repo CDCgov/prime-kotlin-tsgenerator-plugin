@@ -1,0 +1,50 @@
+# Dump from Jet Brain's defaults. Only really care about Kotlin Code Style standards
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = false
+max_line_length = 120
+tab_width = 4
+
+[*.conf]
+indent_size = 2
+tab_width = 2
+
+[*.java]
+indent_size = 2
+tab_width = 2
+
+[*.less]
+indent_size = 2
+
+[*.sass]
+indent_size = 2
+
+[*.scss]
+indent_size = 2
+
+[*.styl]
+indent_size = 2
+
+[{*.bash,*.sh,*.zsh}]
+indent_size = 2
+tab_width = 2
+
+
+# follow the official Kotlin Style Guide
+[{*.gradle.kts,*.kt,*.kts,*.main.kts}]
+indent_size = 4
+indent_style = space
+
+
+[{*.har,*.jsb2,*.jsb3,*.json,.babelrc,.eslintrc,.stylelintrc,bowerrc,jest.config}]
+indent_size = 2
+
+
+[{*.yaml,*.yml}]
+indent_size = 2
+
+[{*.schema,*.valueset}]
+indent_size = 2

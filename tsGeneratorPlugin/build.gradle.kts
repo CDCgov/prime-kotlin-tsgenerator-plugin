@@ -12,7 +12,7 @@ repositories {
     }
 }
 
-group = "gov.cdc.prime"
+group = "com.github.CDCgov"
 version = "0.1-SNAPSHOT"
 
 dependencies {

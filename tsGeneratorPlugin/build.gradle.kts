@@ -16,7 +16,7 @@ group = "gov.cdc.prime"
 version = "0.1-SNAPSHOT"
 
 dependencies {
-    implementation(project(":ts-generator"))
+    implementation(project(":tsGenerator"))
     implementation("io.github.classgraph:classgraph:4.8.154")
     testImplementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
     testImplementation(kotlin("test"))
@@ -41,8 +41,8 @@ kotlin {
 
 gradlePlugin {
     plugins {
-        create("tsGenerator") {
-            id = "gov.cdc.prime.tsGenerator"
+        create("ts-generatorPlugin") {
+            id = "gov.cdc.prime.tsGeneratorPlugin"
             implementationClass = "gov.cdc.prime.tsGenerator.TypescriptGeneratorPlugin"
         }
     }

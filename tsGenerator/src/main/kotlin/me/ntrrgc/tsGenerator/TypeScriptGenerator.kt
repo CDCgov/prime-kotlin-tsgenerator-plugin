@@ -197,16 +197,7 @@ open class TypeScriptGenerator(
         return TypeScriptType.single(classifierTsType, kType.isMarkedNullable, voidType)
     }
 
-    private fun generateEnum(klass: KClass<*>): String {
-        return "type ${klass.simpleName} = ${klass.java.enumConstants
-            .map { constant: Any ->
-                constant.toString().toJSString()
-            }
-            .joinToString(" | ")
-        };"
-    }
-
-    private fun generateInterface(klass: KClass<*>): String {
+    private fun getTypeName(klass: KClass<*>): String {
         var name = klass.simpleName!!
         if (visitedClassSimpleNames.contains(name)) {
             val fullName = klass.qualifiedName!!.replace(".", "")
@@ -220,6 +211,22 @@ open class TypeScriptGenerator(
         } else {
             visitedClassSimpleNames.add(name)
         }
+
+        return name
+    }
+
+    private fun generateEnum(klass: KClass<*>): String {
+        val name = getTypeName(klass)
+        return "type $name = ${klass.java.enumConstants
+            .map { constant: Any ->
+                constant.toString().toJSString()
+            }
+            .joinToString(" | ")
+        };"
+    }
+
+    private fun generateInterface(klass: KClass<*>): String {
+        val name = getTypeName(klass)
         val supertypes = klass.supertypes
             .filterNot { it.classifier in ignoredSuperclasses }
         val extendsString = if (supertypes.isNotEmpty()) {

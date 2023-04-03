@@ -1,6 +1,6 @@
 plugins {
     `java-gradle-plugin`
-    kotlin("jvm") version "1.8.0"
+    kotlin("jvm") version "1.8.20"
     id("org.jlleitschuh.gradle.ktlint") version "11.1.0"
     id("maven-publish")
 }

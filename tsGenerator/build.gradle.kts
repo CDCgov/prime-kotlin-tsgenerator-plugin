@@ -21,7 +21,7 @@ dependencies {
     implementation("io.github.classgraph:classgraph:4.8.154")
     testImplementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
     testImplementation(kotlin("test"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
     api(project(":tsGenerator-annotation"))
 }
 
